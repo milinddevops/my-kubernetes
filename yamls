@@ -1,0 +1,188 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2020-01-02T19:49:29Z"
+  generation: 4
+  name: app-deployment
+  namespace: default
+  resourceVersion: "93559"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/app-deployment
+  uid: 67244d86-8d5e-413c-8cfd-870d3c2a310e
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: hangout
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hangout
+    spec:
+      containers:
+      - image: milinddocker/demo:hangout
+        imagePullPolicy: IfNotPresent
+        name: hangout
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-01-02T19:49:29Z"
+    lastUpdateTime: "2020-01-02T19:50:41Z"
+    message: ReplicaSet "app-deployment-8574558ff9" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2020-01-03T17:55:13Z"
+    lastUpdateTime: "2020-01-03T17:55:13Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2020-01-02T19:51:13Z"
+  name: app-service
+  namespace: default
+  resourceVersion: "71215"
+  selfLink: /api/v1/namespaces/default/services/app-service
+  uid: 7d0f14ba-340d-4ff3-a544-44d94aac45ec
+spec:
+  clusterIP: 10.96.41.11
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 32000
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: hangout
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2020-01-01T20:53:32Z"
+  generation: 1
+  labels:
+    app: database
+  name: mysql-deployment
+  namespace: default
+  resourceVersion: "93551"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/mysql-deployment
+  uid: 32a27229-cdf2-4361-905d-393ffc944532
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: database
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        image: mysql:5.7.28
+        imagePullPolicy: IfNotPresent
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-persistent-storage
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-01-01T20:53:32Z"
+    lastUpdateTime: "2020-01-01T20:53:34Z"
+    message: ReplicaSet "mysql-deployment-6cc7bf897d" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2020-01-03T17:55:12Z"
+    lastUpdateTime: "2020-01-03T17:55:12Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2020-01-01T19:37:27Z"
+  name: musql-svc
+  namespace: default
+  resourceVersion: "15402"
+  selfLink: /api/v1/namespaces/default/services/musql-svc
+  uid: 6164e040-3ac3-41f9-8cb8-601d6acc7a9d
+spec:
+  clusterIP: None
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: database
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
