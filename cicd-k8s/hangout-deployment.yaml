@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: hangoutapp
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   app: hangout
+ strategy:
+  rollingUpdate:
+   maxSurge: 25%
+   maxUnavailable: 25%
+ template:
+  metadata:
+   labels:
+    app: hangout
+  spec:
+    containers:
+     - name: hangout
+       image: milinddocker/demo:hangout
+       envFrom:
+       - configMapRef:
+          name: hangout-config
+       ports:
+        - containerPort: 80
+          protocol: TCP

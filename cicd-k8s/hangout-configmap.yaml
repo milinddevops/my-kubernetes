@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hangout-config
+data:
+  DB_USER: root
+  DB_HOST: hangout-mysql-service
+  DB_NAME: shangout
+  DB_PASSWORD: milind123
+  SITE: my-hangout
+  TITLE: this is my hangout app

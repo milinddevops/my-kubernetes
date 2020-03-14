@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: hangout-mysql-db
+spec:
+ selector:
+  matchLabels:
+   app: hangout-db
+   tier: backend
+ template:
+  metadata:
+   labels:
+    app: hangout-db
+    tier: backend
+  spec:
+   containers:
+    - name: hangout-mysql
+      image: mysql:5.6
+      env:
+      - name: MYSQL_ROOT_PASSWORD
+        valueFrom:
+         secretKeyRef:
+          name: mysql-pass
+          key: password
+      envFrom:
+      - configMapRef:
+         name: hangout-config
+      ports:
+       - containerPort: 3306
+         name: mysql
+      volumeMounts:
+      - name: hangout-persistent-storage
+        mountPath: /var/lib/mysql
+   volumes:
+   - name: hangout-persistent-storage
+     persistentVolumeClaim:
+      claimName: hangout-pvc
