@@ -1,0 +1,12 @@
+apiVersion: autoscale/v1
+kind: HorizontalAutoScaler
+metadata:
+  name: hangout-hpa
+spec:
+  maxReplicas: 4
+  minReplicas: 1
+  scalerTargetReference:
+    apiVersion: extention/v1beta1
+    kind: Deployment
+    name: hangoutapp
+  targetCPUUtilizationPercentage: 20
