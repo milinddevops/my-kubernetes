@@ -19,6 +19,11 @@ spec:
     containers:
      - name: hangout
        image: milinddocker/demo:hangout
+       resources:
+         limits:
+           cpu: "100m"
+         requests:
+           cpu: "100m"
        envFrom:
        - configMapRef:
           name: hangout-config
