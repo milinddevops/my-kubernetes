@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: hangout-batch-container
-          image: mysql:5.6
+          image: camil/mysqldump
           envFrom:
           - configMapRef:
              name: hangout-config
@@ -21,6 +21,7 @@ spec:
               secretKeyRef:
                name: mysql-pass
                key: password
+                   mysql --user="${DB_USER}" --password="${DB_PASSWORD}" --host="${DB_HOST}" "$@" ""${DB_NAME}"" < /mysqldump/$db.sql
           command: [ "mysql" ]
           args: ["-hhangout-mysql-service", "-uroot", "-pmilind123"]
           volumeMounts:
