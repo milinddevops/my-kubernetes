@@ -106,8 +106,6 @@ lxc exec <container-name> bash
 
 ## Configure kubernetes cluster on lxd Containers
 
-- Setup the kubernetes cluster.
-
 Create kubernetes master and two worker node containers.
 ```
 lxc launch images:centos/7 kmaster
