@@ -62,3 +62,27 @@ Verify the kubernetes cluster is accessible
 ```
 kubectl get all
 ```
+
+## Deploy student hangout application in kubernetes
+
+Deploy prerequisite
+```
+kubectl create -f hangout-pv.yaml
+kubectl create -f hangout.pvc.yaml
+kubectl create -f hangout-configmap.yaml
+kubectl create -f hangout-secret.yaml
+```
+
+Deploy database
+
+```
+kubectl create -f hangout-db-deployment.yaml
+kubectl create -f hangout-mysql-service.yaml
+```
+
+Deploy application
+
+```
+kubectl create -f hangout-deployment.yaml
+kubectl create -f hangout-service.yaml
+```
