@@ -36,7 +36,7 @@ I am using lxd containers to spin up my kubernetes cluster, it is a light weight
   lxc help
   ```
 
-  If you need more help for a specific command then you can user.
+  If you need more help for a specific command then you can use.
   ```
   lxc help <command-name>
   ```
