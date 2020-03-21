@@ -68,7 +68,7 @@ I am using lxd containers to spin up my kubernetes cluster, it is a light weight
 
  To list all running containers
  ```
- lxc llist
+ lxc list
  ```
 
  To launch new container, here in this command the ubuntu-16.04 image container will start.
