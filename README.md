@@ -106,11 +106,51 @@ lxc exec <container-name> bash
 
 ## Configure kubernetes cluster on lxd Containers
 
+Create a lxc profile to limit the resources used by the lxc containers
+
+```
+lxc profile list
+lxc profile show default
+lxc prilfe copy default k8s
+```
+Edit the copied profile and create profile which we will use to launch the lxc containers
+
+```
+lxc profile edit k8s
+
+```
+The following contents can used to create the k8s profile
+
+```
+config:
+  limits.cpu: "2"
+  limits.memory: 2GB
+  limits.memory.swap: "false"
+  linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
+  raw.lxc: "lxc.apparmor.profile=unconfined\nlxc.cap.drop= \nlxc.cgroup.devices.allow=a\nlxc.mount.auto=proc:rw
+    sys:rw"
+  security.privileged: "true"
+  security.nesting: "true"
+description: LXD profile for Kubernetes
+devices:
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: lxdbr0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+name: k8s
+used_by: []
+```
+
 Create kubernetes master and two worker node containers.
 ```
-lxc launch images:centos/7 kmaster
-lxc launch images:centos/7 kworker1
-lxc launch images:centos/7 kworker2
+lxc launch images:centos/7 kmaster --profile k8s
+lxc launch images:centos/7 kworker1 --profile k8s
+lxc launch images:centos/7 kworker2 -- profile k8s
 ```
 
 Install the common compoenents on all the node containers.
@@ -132,5 +172,5 @@ Verfiy the cluster information and default services are runninng.
 
 ```
 kubectl get all
-kubectl get svc 
+kubectl get svc
 ```
