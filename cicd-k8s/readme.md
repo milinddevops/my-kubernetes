@@ -25,7 +25,7 @@ lxc launch images:centos/7 kworker1 --profile common-lxc-profile
 lxc launch images:centos/7 kworker2 --profile common-lxc-profile
 ```
 
-Configure kubernetes cluster
+## Configure kubernetes cluster
 
 Install the common compoenents on all the node containers.
 ```
