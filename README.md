@@ -103,3 +103,29 @@ To connect from one container to another containers
 lxc exec <container-name> bash
 
 ```
+
+## Configure kubernetes cluster on lxd Containers
+
+- Setup the kubernetes cluster.
+
+Create kubernetes master and two worker node containers.
+```
+lxc launch images:centos/7 kmaster
+lxc launch images:centos/7 kworker1
+lxc launch images:centos/7 kworker2
+```
+
+Install the common compoenents on all the node containers.
+```
+cat bootstrap.sh | lxc exec kmaster bash
+```
+
+Configure the kubernetes master node container.
+```
+cat bootstrap_kmaster.sh | lxc exec kmaster bash
+```
+
+Configure the kubernetes node container.
+```
+cat bootstrap_kworker.sh | lxc exec kworker bash
+```
