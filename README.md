@@ -127,3 +127,10 @@ Configure the kubernetes node container.
 ```
 cat bootstrap_kworker.sh | lxc exec kworker bash
 ```
+
+Verfiy the cluster information and default services are runninng.
+
+```
+kubectl get all
+kubectl get svc 
+```
