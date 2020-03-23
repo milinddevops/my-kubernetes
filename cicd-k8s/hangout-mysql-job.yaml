@@ -21,7 +21,7 @@ spec:
               secretKeyRef:
                name: mysql-pass
                key: password
-                   mysql --user="${DB_USER}" --password="${DB_PASSWORD}" --host="${DB_HOST}" "$@" ""${DB_NAME}"" < /mysqldump/$db.sql
+                   mysql --user="${DB_USER}" --password="${DB_PASSWORD}" --host="${DB_HOST}" "$@" "${DB_NAME}" < /mysqldump/$db.sql
           command: [ "mysql" ]
           args: ["-hhangout-mysql-service", "-uroot", "-pmilind123"]
           volumeMounts:
