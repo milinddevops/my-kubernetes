@@ -17,3 +17,11 @@ helm repo update
 ```
 helm install prometheus prometheus-community/kube-prometheus-stack
 ```
+
+- Configure data source in grafana 
+
+The first step before using grafana is to configure the data source.
+On the grafana UI you need to go to 
+1. settings >> data-souurce 
+2. specify the prometheus service URL with port number. Ex. http://10.243.54.80:9090
+3. Click on save & test
